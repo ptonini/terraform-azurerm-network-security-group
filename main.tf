@@ -2,6 +2,11 @@ resource "azurerm_network_security_group" "this" {
   name = var.name
   resource_group_name = var.rg.name
   location = var.rg.location
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 resource "azurerm_network_security_rule" "this" {
@@ -17,4 +22,5 @@ resource "azurerm_network_security_rule" "this" {
   destination_port_range = try(each.value["destination_port_range"], "*")
   source_address_prefix = try(each.value["source_address_prefix"], "*")
   destination_address_prefix = try(each.value["destination_address_prefix"], "*")
+
 }
